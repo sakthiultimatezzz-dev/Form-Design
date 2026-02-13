@@ -1,0 +1,926 @@
+Option Compare Database
+
+Private Sub cmdlog_Click()
+
+If User = "Sbicard" And Password = "admin@786" Then
+MsgBox "Longin Successfully", vbInformation, "LOGIN"
+DoCmd.Close
+DoCmd.OpenForm "DATA ENTRY PROJECT"
+
+Else
+MsgBox "Please Re-Enter User Name and Password", vbCritical, "PASSWORD INCORRECT"
+End If
+
+End Sub
+
+Private Sub Command5_Click()
+DoCmd.Close
+End Sub
+
+
+-------------Project------------
+
+Option Compare Database
+Dim rst As New ADODB.Recordset
+Dim rs As New ADODB.Recordset
+Dim Answer As New ADODB.Recordset
+
+Private Sub Cboasm_AfterUpdate()
+
+Me.Txtlocation = DLookup("Location", "asm", "cboasm = " & "asmname")
+
+
+End Sub
+
+Private Sub cmdadd_Click()
+
+If Len(Me.Txtid & "") = 0 Then
+ MsgBox "Enter the Valid Code!!!", vbInformation, "CODE REQUIRED"
+ Me.Txtid.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cboremark & "") = 0 Then
+ MsgBox "Choose The Valid Remarks!!!", vbInformation, "REMARK REQUIRED"
+ Me.Cboremark.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtmont & "") = 0 Then
+ MsgBox "Inward Date is Missing!!!", vbInformation, "MONTH REQUIRED"
+ Me.Txtmont.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtinward & "") = 0 Then
+ MsgBox "Enter The Valid Inward Date!!!", vbInformation, "INWARD DATE REQUIRED"
+ Me.Cboremark.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtinwname & "") = 0 Then
+ MsgBox "Enter The Valid INW Name!!!", vbInformation, "INWARD NAME REQUIRED"
+ Me.Txtinwname.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtapp & "") = 0 Then
+ MsgBox "Application Number Missing!!!", vbCritical, "APPLICATION NUMBER REQUIRED"
+ Me.Txtapp.SetFocus
+ Exit Sub
+ End If
+
+
+ If Len(Me.Txtmob & "") = 0 Then
+ MsgBox "Enter The Valid Mobile No!!!", vbCritical, "MOBILE NUMBER REQUIRED"
+ Me.Txtmob.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtcust & "") = 0 Then
+ MsgBox "Enter The Valid Customer Name!!!", vbInformation, "FILL THE VALID FIELD"
+ Me.Txtcust.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtbre & "") = 0 Then
+ MsgBox "Enter The Valid BRE Code!!!", vbInformation, "FILL THE VALID FIELD"
+ Me.Txtbre.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cboasm & "") = 0 Then
+ MsgBox "Choose The Correct ASM!!!", vbInformation, "FILL THE VALID FIELD"
+ Me.Cboasm.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtlocation & "") = 0 Then
+ MsgBox "Location is Missing!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtlocation.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtbranch & "") = 0 Then
+ MsgBox "Enter The Valid Branch Code!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtbranch.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtregion & "") = 0 Then
+ MsgBox "Wrong Branch Code Please Check!!!", vbCritical, "ENTER THE VALID BRANCH CODE"
+ Me.Txtregion.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtpromo & "") = 0 Then
+ MsgBox "Enter the Valid Promo Code!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtpromo.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtcard & "") = 0 Then
+ MsgBox "Enter The Valid Card Type!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtcard.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtemppf & "") = 0 Then
+ MsgBox "Enter The Valid Branch Emp PF Number!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtemppf.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtbmpf & "") = 0 Then
+ MsgBox "Enter The Valid Branch Manager PF Number!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtbmpf.SetFocus
+ Exit Sub
+ End If
+  
+CurrentDb.Execute "INSERT INTO ENTRY (id,Remarks,Inward_Date,Inward_Name,Application_No,Mob_No,Cust_Name,BRE_Code,ASM_Name,location,Branch_Code,Region,Promo,Card_Type,Month,EMP_PF_NO,BM_PF_NO)" & _
+"VALUES ('" & Txtid & "','" & Cboremark & "','" & Txtinward & "', '" & Txtinwname & "', '" & Txtapp & "','" & Txtmob & "','" & Txtcust & "','" & Txtbre & "','" & Cboasm & "','" & Txtlocation & "','" & Txtbranch & " ','" & Txtregion & "','" & Txtpromo & "','" & Txtcard & "','" & Txtmont & "','" & Txtemppf & "','" & Txtbmpf & "') "
+Txtid = ""
+Cboremark = ""
+Txtinward = ""
+Txtinwname = ""
+Txtapp = ""
+Txtmob = ""
+Txtcust = ""
+Txtbre = ""
+Cboasm = ""
+Txtlocation = ""
+Txtbranch = ""
+Txtregion = ""
+Txtpromo = ""
+Txtcard = ""
+Cboekyc = ""
+Cbocpp = ""
+Cbofhf = ""
+txtpod = ""
+Cborem = ""
+Txtdispatch = ""
+Txtdisname = ""
+Cboupsell = ""
+Txtscreening = ""
+Txtbackcheck = ""
+Txtwcpname = ""
+Txtmont = ""
+Txtid.SetFocus
+rst.Requery
+MsgBox "Added Successfully", vbInformation, "RECORD HAS BEEN SAVED!!!"
+End Sub
+
+Private Sub Cmdappser_Click()
+
+Dim db As Integer
+Dim rs As Recordset
+Set ENTRY = CurrentDb
+Set rs = ENTRY.OpenRecordset("ENTRY")
+Dim x As Integer
+x = 0
+While rs.EOF = False
+If rs!Application_No = Val(Txtappsearch) Then
+Txtid = rs!ID
+Cboremark = rs!remarks
+Txtinward = rs!Inward_Date
+Txtinwname = rs!Inward_Name
+Txtapp = rs!Application_No
+Txtmob = rs!Mob_No
+Txtcust = rs!Cust_Name
+Txtbre = rs!BRE_Code
+Cboasm = rs!ASM_Name
+Txtlocation = rs!location
+Txtbranch = rs!Branch_code
+Txtregion = rs!region
+Txtpromo = rs!Promo
+Txtcard = rs!Card_Type
+Cboekyc = rs!EKYC
+Cbocpp = rs!CPP
+Cbofhf = rs!FHF
+Cborem = rs!remarks
+Txtdispatch = rs!Dispatch_Date
+txtpod = rs!POD
+Txtdisname = rs!Dispatch_Name
+Cboupsell = rs!Upsell
+Txtscreening = rs!Screening
+Txtbackcheck = rs!Back_Check
+Txtwcpname = rs!WCP_Name
+Txtrtsd = rs!RTS_Date
+Txtrts1 = rs!Callling_RTS
+Txtrts2 = rs!Screening_RTS
+Txtrts3 = rs!Audit_RTS
+Txtmont = rs!Month
+Txtemppf = rs!EMP_PF_NO
+Txtbmpf = rs!BM_PF_NO
+x = 1
+End If
+rs.Move 1
+Wend
+If x = 1 Then
+Else: MsgBox "Application Number Not Fount!", vbInformation, "REQUIRED CORRECT APPLICATION"
+End If
+End Sub
+
+Private Sub CmdASM_Click()
+
+DoCmd.OpenForm "ASM_WISE", acNormal
+
+End Sub
+
+Private Sub cmdcl_Click()
+DoCmd.Quit
+End Sub
+
+Private Sub cmdclear_Click()
+Txtid = ""
+Cboremark = ""
+Txtinward = ""
+Txtinwname = ""
+Txtapp = ""
+Txtmob = ""
+Txtcust = ""
+Txtbre = ""
+Cboasm = ""
+Txtlocation = ""
+Txtbranch = ""
+Txtregion = ""
+Txtpromo = ""
+Txtcard = ""
+Cboekyc = ""
+Cbocpp = ""
+Cbofhf = ""
+Cborem = ""
+txtpod = ""
+Txtdispatch = ""
+Txtdisname = ""
+Cboupsell = ""
+Txtscreening = ""
+Txtbackcheck = ""
+Txtwcpname = ""
+Txtrtsd = ""
+Txtrts1 = ""
+Txtrts2 = ""
+Txtrts3 = ""
+Txtcodesearch = ""
+Txtappsearch = ""
+Txtmont = ""
+Txtemppf = ""
+Txtbmpf = ""
+Txtid.SetFocus
+End Sub
+
+Private Sub cmdfirst_Click()
+rst.MoveFirst
+Call displaydata
+End Sub
+
+Private Sub cmdlast_Click()
+rst.MoveLast
+Call displaydata
+End Sub
+
+Private Sub cmdnext_Click()
+If rst.EOF = False Then
+rst.MoveNext
+If rst.EOF = True Then
+rst.MoveLast
+End If
+End If
+Call displaydata
+End Sub
+
+Private Sub cmdpre_Click()
+If rst.BOF = False Then
+rst.MovePrevious
+If rst.BOF = True Then
+rst.MoveFirst
+End If
+End If
+Call displaydata
+End Sub
+
+
+Private Sub cmdrefresh_Click()
+Me.Refresh
+End Sub
+
+Private Sub cmdregion_Click()
+DoCmd.OpenForm "REGION_WISE", acNormal
+End Sub
+
+Private Sub cmdsearch_Click()
+Dim db As Integer
+Dim rs As Recordset
+Set ENTRY = CurrentDb
+Set rs = ENTRY.OpenRecordset("ENTRY")
+Dim x As Integer
+x = 0
+While rs.EOF = False
+If rs!ID = Val(Txtcodesearch) Then
+Txtid = rs!ID
+Cboremark = rs!remarks
+Txtinward = rs!Inward_Date
+Txtinwname = rs!Inward_Name
+Txtapp = rs!Application_No
+Txtmob = rs!Mob_No
+Txtcust = rs!Cust_Name
+Txtbre = rs!BRE_Code
+Cboasm = rs!ASM_Name
+Txtlocation = rs!location
+Txtbranch = rs!Branch_code
+Txtregion = rs!region
+Txtpromo = rs!Promo
+Txtcard = rs!Card_Type
+Cboekyc = rs!EKYC
+Cbocpp = rs!CPP
+Cbofhf = rs!FHF
+Cborem = rs!remarks
+Txtdispatch = rs!Dispatch_Date
+txtpod = rs!POD
+Txtdisname = rs!Dispatch_Name
+Cboupsell = rs!Upsell
+Txtscreening = rs!Screening
+Txtbackcheck = rs!Back_Check
+Txtwcpname = rs!WCP_Name
+Txtrtsd = rs!RTS_Date
+Txtrts1 = rs!Callling_RTS
+Txtrts2 = rs!Screening_RTS
+Txtrts3 = rs!Audit_RTS
+Txtmont = rs!Month
+Txtemppf = rs!EMP_PF_NO
+Txtbmpf = rs!BM_PF_NO
+x = 1
+End If
+rs.Move 1
+Wend
+If x = 1 Then
+Else: MsgBox "Code Not Fount", vbInformation, "REQUIRED CORRECT CODE"
+End If
+End Sub
+
+Private Sub cmdup_Click()
+
+If Len(Me.Txtid & "") = 0 Then
+ MsgBox "Enter the Valid Code!!!", vbInformation, "CODE REQUIRED"
+ Me.Txtid.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cboremark & "") = 0 Then
+ MsgBox "Choose The Valid Remarks!!!", vbInformation, "REMARK REQUIRED"
+ Me.Cboremark.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtmont & "") = 0 Then
+ MsgBox "Inward Date is Missing!!!", vbInformation, "MONTH REQUIRED"
+ Me.Txtmont.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtinward & "") = 0 Then
+ MsgBox "Enter The Valid Inward Date!!!", vbInformation, "INWARD DATE REQUIRED"
+ Me.Cboremark.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtinwname & "") = 0 Then
+ MsgBox "Enter The Valid INW Name!!!", vbInformation, "INWARD NAME REQUIRED"
+ Me.Txtinwname.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtapp & "") = 0 Then
+ MsgBox "Application Number Missing!!!", vbCritical, "APPLICATION NUMBER REQUIRED"
+ Me.Txtapp.SetFocus
+ Exit Sub
+ End If
+
+
+ If Len(Me.Txtmob & "") = 0 Then
+ MsgBox "Enter The Valid Mobile No!!!", vbCritical, "MOBILE NUMBER REQUIRED"
+ Me.Txtmob.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtcust & "") = 0 Then
+ MsgBox "Enter The Valid Customer Name!!!", vbInformation, "FILL THE VALID FIELD"
+ Me.Txtcust.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtbre & "") = 0 Then
+ MsgBox "Enter The Valid BRE Code!!!", vbInformation, "FILL THE VALID FIELD"
+ Me.Txtbre.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cboasm & "") = 0 Then
+ MsgBox "Choose The Correct ASM!!!", vbInformation, "FILL THE VALID FIELD"
+ Me.Cboasm.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtlocation & "") = 0 Then
+ MsgBox "Location is Missing!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtlocation.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtbranch & "") = 0 Then
+ MsgBox "Enter The Valid Branch Code!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtbranch.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtregion & "") = 0 Then
+ MsgBox "Wrong Branch Code Please Check!!!", vbCritical, "ENTER THE VALID BRANCH CODE"
+ Me.Txtregion.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtpromo & "") = 0 Then
+ MsgBox "Enter the Valid Promo Code!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtpromo.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtcard & "") = 0 Then
+ MsgBox "Enter The Valid Card Type!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtcard.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtemppf & "") = 0 Then
+ MsgBox "Enter The Valid Branch Emp PF Number!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtemppf.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtbmpf & "") = 0 Then
+ MsgBox "Enter The Valid Branch Manager PF Number!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtbmpf.SetFocus
+ Exit Sub
+ End If
+ 
+CurrentDb.Execute " UPDATE ENTRY Set ID = '" & Me.Txtid & "', Remarks = '" & Me.Cboremark & "', Inward_Date = '" & Me.Txtinward & "', Inward_Name = '" & Me.Txtinwname & "', Application_No = '" & Me.Txtapp & "', Mob_No = '" & Me.Txtmob & "', Cust_Name = '" & Me.Txtcust & "', BRE_Code = '" & Me.Txtbre & "', ASM_Name = '" & Me.Cboasm & "', Location = '" & Me.Txtlocation & "', Branch_Code = '" & Me.Txtbranch & "', Region = '" & Me.Txtregion & "', Promo = '" & Me.Txtpromo & "', Card_Type = '" & Me.Txtcard & "', RTS_Date = '" & Me.Txtrtsd & "', Callling_RTS = '" & Me.Txtrts1 & "',Screening_RTS = '" & Me.Txtrts2 & "',Month = '" & Me.Txtmont & "',EMP_PF_NO = '" & Txtemppf & "',BM_PF_NO = '" & Txtbmpf & "', Audit_RTS = '" & Me.Txtrts3 & "'" & _
+" Where ID = '" & Me.Txtid & "'"
+
+Txtid = ""
+Cboremark = ""
+Txtinward = ""
+Txtinwname = ""
+Txtapp = ""
+Txtmob = ""
+Txtcust = ""
+Txtbre = ""
+Cboasm = ""
+Txtlocation = ""
+Txtbranch = ""
+Txtregion = ""
+Txtpromo = ""
+Txtcard = ""
+Cboekyc = ""
+Cbocpp = ""
+Cbofhf = ""
+txtpod = ""
+Cborem = ""
+Txtdispatch = ""
+Txtdisname = ""
+Cboupsell = ""
+Txtscreening = ""
+Txtbackcheck = ""
+Txtwcpname = ""
+Txtrtsd = ""
+Txtrts1 = ""
+Txtrts2 = ""
+Txtrts3 = ""
+Txtmont = ""
+Txtemppf = ""
+Txtbmpf = ""
+Me.Txtid.SetFocus
+
+MsgBox "Updated Successfully", vbInformation, "UPDATED FIELD'S"
+End Sub
+
+Private Sub cmdupdate_Click()
+
+
+If Len(Me.Txtid & "") = 0 Then
+ MsgBox "Enter the Valid Code!!!", vbCritical, "CODE REQUIRED"
+ Me.Txtid.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cboremark & "") = 0 Then
+ MsgBox "Choose The Valid Remarks!!!", vbCritical, "REMARK REQUIRED"
+ Me.Cboremark.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtmont & "") = 0 Then
+ MsgBox "Inward Date is Missing!!!", vbInformation, "MONTH REQUIRED"
+ Me.Txtmont.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtinward & "") = 0 Then
+ MsgBox "Enter The Valid Inward Date!!!", vbCritical, "INWARD DATE REQUIRED"
+ Me.Cboremark.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtinwname & "") = 0 Then
+ MsgBox "Enter The Valid INW Name!!!", vbCritical, "INWARD NAME REQUIRED"
+ Me.Txtinwname.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtapp & "") = 0 Then
+ MsgBox "Application Number Missing!!!", vbCritical, "APPLICATION NUMBER REQUIRED"
+ Me.Txtapp.SetFocus
+ Exit Sub
+ End If
+
+
+ If Len(Me.Txtmob & "") = 0 Then
+ MsgBox "Enter The Valid Mobile No!!!", vbCritical, "MOBILE NUMBER REQUIRED"
+ Me.Txtmob.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtcust & "") = 0 Then
+ MsgBox "Enter The Valid Customer Name!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtcust.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtbre & "") = 0 Then
+ MsgBox "Enter The Valid BRE Code!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtbre.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cboasm & "") = 0 Then
+ MsgBox "Choose The Correct ASM!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Cboasm.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtlocation & "") = 0 Then
+ MsgBox "Location is Missing!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtlocation.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtbranch & "") = 0 Then
+ MsgBox "Enter The Valid Branch Code!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtbranch.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtregion & "") = 0 Then
+ MsgBox "Wrong Branch Code Please Check!!!", vbCritical, "ENTER THE VALID BRANCH CODE"
+ Me.Txtregion.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtpromo & "") = 0 Then
+ MsgBox "Enter the Valid Promo Code!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtpromo.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtcard & "") = 0 Then
+ MsgBox "Enter The Valid Card Type!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtcard.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Cborem & "") = 0 Then
+ MsgBox "Choose The Valid Remarks!!!", vbCritical, "REMARK REQUIRED"
+ Me.Cborem.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtdispatch & "") = 0 Then
+ MsgBox "Enter The Valid Dispatch Date!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtdispatch.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.txtpod & "") = 0 Then
+ MsgBox "POD Number Missing!!!", vbCritical, "POD NUMBER REQUIRED"
+ Me.txtpod.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Txtdisname & "") = 0 Then
+ MsgBox "Enter The App Sender Name!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtdisname.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cboupsell & "") = 0 Then
+ MsgBox "Choose The Upsell Yes/No!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Cboupsell.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtscreening & "") = 0 Then
+ MsgBox "Enter the DIP Name!!!", vbCritical, "SCREENING NAME REQUIRED"
+ Me.Txtscreening.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtbackcheck & "") = 0 Then
+ MsgBox "Enter the Telecaller Name!!!", vbCritical, "TELE CALLER NAME REQUIRED"
+ Me.Txtbackcheck.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtwcpname & "") = 0 Then
+ MsgBox "Enter the WCP Name!!!", vbCritical, "WCP NAME REQUIRED"
+ Me.Txtwcpname.SetFocus
+ Exit Sub
+ End If
+ 
+ 
+ If Len(Me.Cboekyc & "") = 0 Then
+ MsgBox "Choose The EKYC Yes/No!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Cboekyc.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cbocpp & "") = 0 Then
+ MsgBox "Choose The CPP Yes/No!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Cbocpp.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Cbofhf & "") = 0 Then
+ MsgBox "Choose The FHF Yes/No!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Cbofhf.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtemppf & "") = 0 Then
+ MsgBox "Enter The Valid Branch Emp PF Number!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtemppf.SetFocus
+ Exit Sub
+ End If
+ 
+ If Len(Me.Txtbmpf & "") = 0 Then
+ MsgBox "Enter The Valid Branch Manager PF Number!!!", vbCritical, "FILL THE VALID FIELD"
+ Me.Txtbmpf.SetFocus
+ Exit Sub
+ End If
+  
+CurrentDb.Execute "UPDATE ENTRY Set ID = " & Me.Txtid & _
+", Inward_Date = '" & Me.Txtinward & "'" & _
+",Inward_Name = '" & Me.Txtinwname & "'" & _
+", Application_No = '" & Me.Txtapp & "'" & _
+", Mob_No = '" & Me.Txtmob & "'" & _
+", Cust_Name = '" & Me.Txtcust & "'" & _
+", BRE_Code = '" & Me.Txtbre & "'" & _
+", ASM_Name = '" & Me.Cboasm & "'" & _
+", Location = '" & Me.Txtlocation & "'" & _
+", Branch_Code = '" & Me.Txtbranch & "'" & _
+", Region = '" & Me.Txtregion & "'" & _
+", Promo = '" & Me.Txtpromo & "'" & _
+", Card_Type = '" & Me.Txtcard & "'" & _
+", EKYC = '" & Me.Cboekyc & "'" & _
+", CPP = '" & Me.Cbocpp & "'" & _
+", FHF = '" & Me.Cbofhf & "'" & _
+", remarks = '" & Me.Cborem & "'" & _
+", Dispatch_Date = '" & Me.Txtdispatch & "'" & _
+", POD = '" & Me.txtpod & "'" & _
+", Dispatch_Name = '" & Me.Txtdisname & "'" & _
+", Upsell = '" & Me.Cboupsell & "'" & _
+", Screening = '" & Me.Txtscreening & "'" & _
+", Month = '" & Me.Txtmont & "'" & _
+", Back_Check = '" & Me.Txtbackcheck & "',EMP_PF_NO = '" & Me.Txtemppf & "',BM_PF_NO = '" & Me.Txtbmpf & "', WCP_Name = '" & Me.Txtwcpname & "'" & _
+" Where ID = '" & Me.Txtid & "'"
+
+Txtid = ""
+Cboremark = ""
+Txtinward = ""
+Txtinwname = ""
+Txtapp = ""
+Txtmob = ""
+Txtcust = ""
+Txtbre = ""
+Cboasm = ""
+Txtlocation = ""
+Txtbranch = ""
+Txtregion = ""
+Txtpromo = ""
+Txtcard = ""
+Cboekyc = ""
+Cbocpp = ""
+Cbofhf = ""
+Cborem = ""
+txtpod = ""
+Txtdispatch = ""
+Txtdisname = ""
+Cboupsell = ""
+Txtscreening = ""
+Txtbackcheck = ""
+Txtwcpname = ""
+Txtrtsd = ""
+Txtrts1 = ""
+Txtrts2 = ""
+Txtrts3 = ""
+Txtcodesearch = ""
+Txtappsearch = ""
+Txtmont = ""
+Txtemppf = ""
+Txtbmpf = ""
+Cborem.SetFocus
+
+ MsgBox "Updated Successfully", vbInformation, "UPDATED FIELD'S"
+End Sub
+
+
+Private Sub Form_Load()
+rst.Open "[ENTRY]", CurrentProject.Connection, adOpenKeyset, adLockOptimistic
+
+Call displaydata
+End Sub
+
+Sub displaydata()
+
+Txtid = rst("ID")
+Cboremark = rst("Remarks")
+Txtinward = rst("Inward_Date")
+Txtinwname = rst("Inward_Name")
+Txtapp = rst("Application_No")
+Txtmob = rst("Mob_No")
+Txtcust = rst("Cust_Name")
+Txtbre = rst("BRE_Code")
+Cboasm = rst("ASM_Name")
+Txtlocation = rst("Location")
+Txtbranch = rst("Branch_Code")
+Txtregion = rst("Region")
+Txtpromo = rst("Promo")
+Txtcard = rst("Card_Type")
+Cboekyc = rst("EKYC")
+Cbocpp = rst("CPP")
+Cbofhf = rst("FHF")
+txtpod = rst("POD")
+Cborem = rst("remarks")
+Txtdispatch = rst("Dispatch_Date")
+Txtdisname = rst("Dispatch_Name")
+Cboupsell = rst("Upsell")
+Txtscreening = rst("Screening")
+Txtbackcheck = rst("Back_Check")
+Txtwcpname = rst("WCP_Name")
+Txtrtsd = rst("RTS_Date")
+Txtrts1 = rst("Callling_RTS")
+Txtrts2 = rst("Screening_RTS")
+Txtrts3 = rst("Audit_RTS")
+Txtmont = rst("Month")
+Txtemppf = rst("EMP_PF_NO")
+Txtbmpf = rst("BM_PF_NO")
+
+End Sub
+
+Private Sub Cmdexport_Click()
+
+Dim FileExcel As String
+FileExcel = "C:\Users\502762684\Desktop\Sathish M\Non_Metro\ProjectF\Output\Entry.xlsx"
+DoCmd.TransferSpreadsheet acExport, , "ENTRY", FileExcel
+MsgBox "Exported Successfully", vbInformation, "EXPORTED DONE!!!"
+
+End Sub
+
+Private Sub Txtapp_BeforeUpdate(Cancel As Integer)
+Dim Answer As Variant
+Answer = DLookup("[Application_no]", "ENTRY", "[Application_No] = '" & Me.Txtapp & "'")
+If Not IsNull(Answer) Then
+MsgBox "Duplicate App Number Found" & vbCrLf & "Please Search and Update.", vbCritical + vbOKOnly + vbDefaultButton1, "Duplicate"
+Cancel = True
+Exit Sub
+Me.Txtapp.Undo
+ 
+ Else:
+ End If
+
+
+If Not Len(Trim(Txtapp)) = 13 Then
+MsgBox "Please Enter the 13 Digit number", vbInformation, "APPLICATION MISMATCH"
+Cancel = True
+Exit Sub
+End If
+
+If Not IsNumeric(Trim(Txtapp)) Then
+MsgBox "Please Enter The number only", vbQuestion, "CODE MISMATCH"
+Cancel = True
+Exit Sub
+End If
+End Sub
+
+Private Sub Txtbranch_AfterUpdate()
+
+Me.Txtregion = DLookup("Region", "Regions", "txtbranch = " & "Branchcode")
+
+End Sub
+
+Private Sub Txtbre_BeforeUpdate(Cancel As Integer)
+If Not Len(Trim(Txtbre)) = 11 Then
+MsgBox "Please Enter the 11 Digit BRE Code", vbInformation, "CORRECT BRE CODE REQUIRED"
+Cancel = True
+Exit Sub
+End If
+
+End Sub
+
+Private Sub Txtcard_BeforeUpdate(Cancel As Integer)
+If Not Len(Trim(Txtcard)) = 4 Then
+MsgBox "Enter the 4 Digit Valid Card Type", vbInformation, "CARD TYPE MISMATCH"
+Cancel = True
+Exit Sub
+End If
+End Sub
+
+Private Sub Txtid_BeforeUpdate(Cancel As Integer)
+
+Dim Answer As Variant
+Answer = DLookup("[id]", "ENTRY", "[ID] = '" & Me.Txtid & "'")
+If Not IsNull(Answer) Then
+MsgBox "Duplicate Code Number Found" & vbCrLf & "Please enter again.", vbCritical + vbOKOnly + vbDefaultButton1, "Duplicate"
+Cancel = True
+Exit Sub
+Me.Txtid.Undo
+ 
+ Else:
+ End If
+ 
+If Not Len(Trim(Txtid)) < 7 Then
+MsgBox "Enter The < 7 Your App Reference Code", vbInformation, "CODE MISMATCH"
+Cancel = True
+Exit Sub
+End If
+
+If Not IsNumeric(Trim(Txtid)) Then
+MsgBox "Please Enter the < 7 Digit Number only", vbQuestion, "CODE MISMATCH"
+Cancel = True
+Exit Sub
+End If
+ 
+End Sub
+
+Private Sub Txtinward_AfterUpdate()
+
+Me.Txtmont = DLookup("months", "Date", "txtinward = " & "date")
+
+End Sub
+
+Private Sub Txtmob_BeforeUpdate(Cancel As Integer)
+If Not Len(Trim(Txtmob)) = 10 Then
+MsgBox "Please Enter the 10 Digit number", vbInformation, "MOBILE NUMBER REQUIRED"
+Cancel = True
+Exit Sub
+End If
+
+If Not IsNumeric(Trim(Txtmob)) Then
+MsgBox "Please Enter the number only", vbInformation, "MOBILE NUMBER MISMATCH"
+Cancel = True
+Exit Sub
+End If
+End Sub
+
+
+Private Sub txtpod_BeforeUpdate(Cancel As Integer)
+If Not Len(Trim(txtpod)) = 11 Then
+MsgBox "Please Enter the 11 Digit POD number", vbInformation, "PLEASE ENTER VALID POD NUMBER"
+Cancel = True
+Exit Sub
+End If
+
+If Not IsNumeric(Trim(txtpod)) Then
+MsgBox "Please Enter the number only"
+Cancel = True
+Exit Sub
+End If
+End Sub
+
+Private Sub Txtpromo_BeforeUpdate(Cancel As Integer)
+If Not Len(Trim(Txtpromo)) = 4 Then
+MsgBox "Enter the 4 Digit Valid Promo", vbInformation, "PROMO CODE MISMATCH"
+Cancel = True
+Exit Sub
+End If
+End Sub
+
